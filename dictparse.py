@@ -16,8 +16,6 @@ WORD = re.compile('^[A-z]+$')
 SKIP_LINES = 27
 END_INDICATOR = "End of Project Gutenberg's Webster's Unabridged Dictionary"
 
-# class State(Enum):
-
 def isheader(string):
     return HEADER.match(string) is not None
 
@@ -40,6 +38,20 @@ def isdefinition(string):
 def isword(string):
     return WORD.match(string) is not None
 
+def count_chars(dictionary):
+    count = 0
+    for definitions in dictionary.values():
+        count += sum(len(d) for d in definitions)
+    return count
+
+def remove_parentheticals(string):
+    if not string:
+        return string
+    stripped = re.sub(r'\([^)]*\)', '', string)
+    stripped = re.sub(r'--', '', stripped)
+    stripped = re.sub(r'\s\s+', ' ', stripped)
+    stripped = re.sub(r'\s+,', ',', stripped)
+    return stripped.strip()
 
 def main():
 
@@ -68,7 +80,8 @@ def main():
                 assert not defining
                 last_headers = [s.strip() for s in line.split(';')]
             elif isdefinition(line):
-                if definition is not None:
+                definition = remove_parentheticals(definition)
+                if definition:
                     for header in last_headers:
                         defs[header].append(definition)
 
@@ -88,16 +101,22 @@ def main():
                     #     print(number )
                     #     print(line)
                     assert last_headers is not None
-                    for header in last_headers:
-                        # if header == 'ZYMOMETER':
-                        #     print(definition)
-                        # if header == 'ZYMOSIMETER':
-                        #     print(definition)
-                        defs[header].append(definition)
+                    definition = remove_parentheticals(definition)
+                    if definition:
+                        for header in last_headers:
+                            # if header == 'ZYMOMETER':
+                            #     print(definition)
+                            # if header == 'ZYMOSIMETER':
+                            #     print(definition)
+                            defs[header].append(definition)
                     definition = None
                 else:
                     assert definition is not None
                     definition += ' ' + line
+
+    print('Character count is {}.'.format(count_chars(defs)))
+
+    # print(defs['GAPER'])
 
     joblib.dump(defs, 'definitions.pkl')
 
