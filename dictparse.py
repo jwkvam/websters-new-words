@@ -59,8 +59,7 @@ def main():
     defining = False
     last_headers = None
     definition = None
-    # with open('./pg29765.txt', 'r') as f:
-    with open('./pg2.txt', 'r') as f:
+    with open('./pg.txt', 'r') as f:
         # skip first 27 lines
         for _ in range(SKIP_LINES):
             next(f)
