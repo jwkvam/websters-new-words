@@ -53,7 +53,8 @@ def main():
 
     joblib.dump(X, 'X_words.jbl', compress=3)
     joblib.dump(y, 'y_words.jbl', compress=3)
-
+    joblib.dump(char_idx, 'char_idx.jbl', compress=3)
+    joblib.dump(idx_char, 'idx_char.jbl', compress=3)
 
 
 
