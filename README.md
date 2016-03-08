@@ -3,7 +3,6 @@
 ## Directions
 
 - bash download.sh
-- 
 
 ## References
 
