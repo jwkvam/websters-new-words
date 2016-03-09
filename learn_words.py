@@ -9,11 +9,12 @@ def main():
     X = joblib.load('./X_words.jbl')
     y = joblib.load('./y_words.jbl')
 
-    models.create_model(X.shape[1], X.shape[2])
-
+    print('loaded data')
+    model = models.create_model(X.shape[1], X.shape[2])
+    print('model compiled')
+    print(model.summary())
     model.fit(X, y, batch_size=128, nb_epoch=1)
-    models.save_weights('word_model.h5')
-    # joblib.dump(model.get_weights(), 'model_weights.jbl', compress=3)
+    model.save_weights('word_model.h5')
 
 if __name__ == "__main__":
     main()

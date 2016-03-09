@@ -14,9 +14,9 @@ def create_model(history, n_chars):
     NEURON = LSTM
     INIT = 'glorot_uniform'
     model = Sequential()
-    model.add(NEURON(512, input_shape=(history, n_chars), return_sequences=True))
+    model.add(NEURON(128, input_shape=(history, n_chars), return_sequences=True))
     model.add(Dropout(0.2))
-    model.add(NEURON(512, return_sequences=False))
+    model.add(NEURON(128, return_sequences=False))
     model.add(Dropout(0.2))
     model.add(Dense(n_chars))
     model.add(Activation('softmax'))
