@@ -14,7 +14,7 @@ def main():
     print('model compiled')
     print(model.summary())
     model.fit(X, y, batch_size=128, nb_epoch=1)
-    model.save_weights('word_model.h5')
+    model.save_weights('word_model.h5', overwrite=True)
 
 if __name__ == "__main__":
     main()
