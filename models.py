@@ -10,7 +10,8 @@ from keras.layers.embeddings import Embedding
 from keras.layers.recurrent import LSTM, GRU
 from keras.optimizers import RMSprop, Adam
 
-def create_model(history, n_chars):
+
+def create_model(history, n_chars, summary=True):
     NEURON = LSTM
     INIT = 'glorot_uniform'
     model = Sequential()
@@ -22,6 +23,23 @@ def create_model(history, n_chars):
     model.add(Activation('softmax'))
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam')
+    if summary:
+        print(model.summary())
     return model
 
 
+def definition_model(history, n_chars, summary=True):
+    NEURON = LSTM
+    INIT = 'glorot_uniform'
+    model = Sequential()
+    model.add(NEURON(512, input_shape=(history, n_chars), return_sequences=True))
+    model.add(Dropout(0.2))
+    model.add(NEURON(512, return_sequences=False))
+    model.add(Dropout(0.2))
+    model.add(Dense(n_chars))
+    model.add(Activation('softmax'))
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam')
+    if summary:
+        print(model.summary())
+    return model
